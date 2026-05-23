@@ -1,0 +1,123 @@
+aid: trulia
+name: Trulia
+description: >-
+  Trulia is a U.S. home and rental search portal owned by Zillow Group since
+  the 2015 acquisition. Trulia is best known for its neighborhood data layer,
+  combining listings with crime, school, commute, transit, noise, flood, and
+  resident sentiment information overlaid on the map. After the Zillow Group
+  consolidation, Trulia's historical public APIs (the Trulia Hotpads /
+  Property / Stats / Schools / Locations APIs) were deprecated and shut down.
+  Trulia listings, agent, and rental data are now distributed through Zillow
+  Group programs (Bridge Interactive, Zillow Tech Connect, HotPads). This
+  profile is maintained as an honest historical record and pointer to the
+  successor Zillow Group developer surfaces.
+image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+url: https://www.trulia.com
+created: '2024-01-01'
+modified: '2026-05-23'
+specificationVersion: '0.19'
+type: Index
+access: 3rd-Party
+tags:
+  - Acquired
+  - Historical
+  - Listings
+  - Neighborhoods
+  - Real Estate
+  - Rentals
+  - Schools
+  - Sunset
+  - Zillow Group
+apis:
+  - aid: trulia:trulia-api-historical
+    name: Trulia API (Historical / Sunset)
+    description: >-
+      The Trulia API was a suite of public XML/JSON endpoints that exposed
+      listings, property details, location lookups, neighborhood statistics,
+      and school data. The full suite was deprecated after Trulia was
+      absorbed into Zillow Group, and the developer.trulia.com portal was
+      taken offline. No new keys are issued. Equivalent data is now available
+      only to licensed real-estate professionals through Bridge Interactive.
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://www.trulia.com
+    baseURL: https://api.trulia.com
+    tags:
+      - Deprecated
+      - Listings
+      - Neighborhoods
+      - Real Estate
+      - Sunset
+    properties:
+      - type: Successor
+        url: https://bridgedataoutput.com
+      - type: ParentCompany
+        url: https://www.zillowgroup.com
+  - aid: trulia:zillow-group-successor
+    name: Zillow Group APIs (Successor)
+    description: >-
+      Programmatic access to data that historically lived behind the Trulia
+      API is now delivered through Zillow Group's Bridge Interactive
+      RESO-compliant data platform for MLSs and brokers, the Zillow Tech
+      Connect partner program for vetted vendors, and the HotPads rentals
+      surface. Access is gated, partner-only, and not self-serve.
+    image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+    humanURL: https://www.zillowgroup.com/developers
+    baseURL: https://api.bridgedataoutput.com
+    tags:
+      - Bridge
+      - MLS
+      - Partners
+      - Real Estate
+      - RESO
+      - Zillow Group
+    properties:
+      - type: Portal
+        url: https://www.zillowgroup.com/developers
+      - type: Documentation
+        url: https://bridgedataoutput.com/docs/platform/
+common:
+  - url: https://www.trulia.com
+    name: Trulia Website
+    type: Website
+  - url: https://www.trulia.com/about/
+    name: About Trulia
+    type: About
+  - url: https://www.zillowgroup.com
+    name: Zillow Group (Parent)
+    type: ParentCompany
+  - url: https://www.zillowgroup.com/developers
+    name: Zillow Group Developers
+    type: Portal
+  - url: https://bridgedataoutput.com
+    name: Bridge Interactive (Successor)
+    type: Successor
+  - url: https://www.trulia.com/research/
+    name: Trulia Research
+    type: Research
+  - url: https://www.trulia.com/blog/
+    name: Trulia Blog
+    type: Blog
+  - url: https://www.trulia.com/help/
+    name: Trulia Help Center
+    type: Support
+  - url: https://www.trulia.com/legal/terms/
+    name: Trulia Terms of Service
+    type: TermsOfService
+  - url: https://www.trulia.com/legal/privacy/
+    name: Trulia Privacy Policy
+    type: PrivacyPolicy
+  - url: https://x.com/trulia
+    name: Trulia on X
+    type: X
+  - url: https://www.facebook.com/trulia
+    name: Trulia on Facebook
+    type: Facebook
+  - url: https://www.linkedin.com/company/trulia
+    name: Trulia on LinkedIn
+    type: LinkedIn
+  - url: https://www.instagram.com/trulia
+    name: Trulia on Instagram
+    type: Instagram
+maintainers:
+  - FN: Kin Lane
+    email: kin@apievangelist.com
