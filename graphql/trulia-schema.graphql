@@ -1,0 +1,965 @@
+"""
+Trulia GraphQL Schema (Conceptual)
+Real estate and rental search platform owned by Zillow Group.
+Trulia's historical public APIs were deprecated post-acquisition.
+This schema models those surfaces as modern GraphQL.
+Successor data: Bridge Interactive (https://bridgedataoutput.com)
+"""
+
+# ─── Scalars ────────────────────────────────────────────────────────────────
+
+scalar Date
+scalar DateTime
+scalar URL
+scalar JSON
+
+# ─── Enums ──────────────────────────────────────────────────────────────────
+
+enum PropertyType {
+  SINGLE_FAMILY
+  CONDO
+  TOWNHOME
+  MULTI_FAMILY
+  LOT
+  MOBILE_HOME
+  APARTMENT
+}
+
+enum SchoolType {
+  ELEMENTARY
+  MIDDLE
+  HIGH
+  K8
+  K12
+  CHARTER
+  PRIVATE
+  MAGNET
+}
+
+enum ListingStatus {
+  ACTIVE
+  PENDING
+  SOLD
+  OFF_MARKET
+  FORECLOSURE
+  PRE_FORECLOSURE
+}
+
+enum RentalStatus {
+  AVAILABLE
+  LEASED
+  PENDING
+  COMING_SOON
+}
+
+enum LoanType {
+  CONVENTIONAL
+  FHA
+  VA
+  JUMBO
+  USDA
+}
+
+enum MortgageTerm {
+  YEAR_10
+  YEAR_15
+  YEAR_20
+  YEAR_30
+}
+
+enum LocationType {
+  CITY
+  COUNTY
+  ZIP_CODE
+  NEIGHBORHOOD
+  STATE
+}
+
+enum CrimeGradeLevel {
+  A_PLUS
+  A
+  A_MINUS
+  B_PLUS
+  B
+  B_MINUS
+  C_PLUS
+  C
+  C_MINUS
+  D_PLUS
+  D
+  D_MINUS
+  F
+}
+
+enum FloodZone {
+  A
+  AE
+  AH
+  AO
+  AR
+  A99
+  V
+  VE
+  X
+  D
+}
+
+enum FloodRiskLevel {
+  MINIMAL
+  LOW
+  MODERATE
+  HIGH
+  VERY_HIGH
+}
+
+enum ParkingType {
+  GARAGE
+  CARPORT
+  DRIVEWAY
+  STREET
+  NONE
+}
+
+# ─── Input Types ─────────────────────────────────────────────────────────────
+
+"""Cursor-based pagination input."""
+input PaginationInput {
+  first: Int = 20
+  after: String
+  last: Int
+  before: String
+}
+
+"""Filter parameters for for-sale listing search."""
+input ListingFilter {
+  cityName: String
+  stateCode: String
+  zipCode: String
+  neighborhoodId: ID
+  minPrice: Float
+  maxPrice: Float
+  minBeds: Int
+  maxBeds: Int
+  minBaths: Float
+  maxBaths: Float
+  minSqft: Int
+  maxSqft: Int
+  propertyTypes: [PropertyType!]
+  status: ListingStatus
+  hasOpenHouse: Boolean
+  maxDaysOnMarket: Int
+  yearBuiltMin: Int
+  yearBuiltMax: Int
+}
+
+"""Filter parameters for rental listing search."""
+input RentalFilter {
+  cityName: String
+  stateCode: String
+  zipCode: String
+  neighborhoodId: ID
+  minRent: Float
+  maxRent: Float
+  minBeds: Int
+  maxBeds: Int
+  minBaths: Float
+  petsAllowed: Boolean
+  furnished: Boolean
+  incomeRestricted: Boolean
+  amenities: [String!]
+}
+
+"""Filter parameters for open house search."""
+input OpenHouseFilter {
+  cityName: String
+  stateCode: String
+  zipCode: String
+  neighborhoodId: ID
+  startDate: Date
+  endDate: Date
+}
+
+# ─── Core Location Types ──────────────────────────────────────────────────────
+
+"""Postal address with geocoordinates."""
+type Address {
+  street: String!
+  unit: String
+  city: String!
+  state: String!
+  zipCode: String!
+  county: String
+  lat: Float
+  lng: Float
+  formattedAddress: String!
+}
+
+"""U.S. state record."""
+type State {
+  id: ID!
+  name: String!
+  abbreviation: String!
+  fipsCode: String!
+  medianHomeValue: Float
+  medianRent: Float
+}
+
+"""City-level record."""
+type City {
+  id: ID!
+  name: String!
+  state: State!
+  population: Int
+  medianHomeValue: Float
+  medianRent: Float
+  neighborhoodCount: Int
+  listingsForSaleCount: Int
+  listingsForRentCount: Int
+}
+
+"""ZIP code record."""
+type ZipCode {
+  code: String!
+  primaryCity: String!
+  county: County!
+  state: State!
+  lat: Float
+  lng: Float
+  medianHomeValue: Float
+  medianRent: Float
+}
+
+"""County record."""
+type County {
+  id: ID!
+  name: String!
+  state: State!
+  fipsCode: String!
+  medianHomeValue: Float
+  medianRent: Float
+}
+
+# ─── Neighborhood Types ───────────────────────────────────────────────────────
+
+"""Neighborhood summary node."""
+type Neighborhood {
+  id: ID!
+  name: String!
+  city: City!
+  state: State!
+  boundaryPolygon: JSON
+  stats: NeighborhoodStats!
+  details: NeighborhoodDetails!
+  crimeGrade: CrimeGrade!
+  schools(types: [SchoolType!]): [School!]!
+  amenities: [NeighborhoodAmenity!]!
+  walkScore: WalkScore
+  transitScore: TransitScore
+  bikeScore: BikeScore
+  homeValues: HomeValues
+  rentIndex: RentIndex
+}
+
+"""Aggregated market statistics for a neighborhood."""
+type NeighborhoodStats {
+  medianListPrice: Float
+  medianSalePrice: Float
+  medianRent: Float
+  avgDaysOnMarket: Int
+  activeListingsCount: Int
+  soldLastMonthCount: Int
+  inventoryMonths: Float
+  pricePerSqft: Float
+  yoyPriceChange: Float
+  yoyRentChange: Float
+}
+
+"""Extended neighborhood profile."""
+type NeighborhoodDetails {
+  description: String
+  residentPopulation: Int
+  medianAge: Float
+  medianHouseholdIncome: Float
+  ownerOccupiedPct: Float
+  renterOccupiedPct: Float
+  vacancyRate: Float
+  restaurantCount: Int
+  groceryCount: Int
+  coffeeShopCount: Int
+  parkCount: Int
+  transitStopCount: Int
+}
+
+# ─── Property Types ───────────────────────────────────────────────────────────
+
+"""Core property node."""
+type Property {
+  id: ID!
+  address: Address!
+  propertyType: PropertyType!
+  details: PropertyDetails!
+  neighborhood: Neighborhood
+  listingForSale: ListingForSale
+  listingForRent: ListingForRent
+  priceHistory: [HistoricalPrice!]!
+  schools(radius: Float): [School!]!
+  walkScore: WalkScore
+  transitScore: TransitScore
+  bikeScore: BikeScore
+  crimeGrade: CrimeGrade
+  floodRisk: FloodRisk
+  pollutionLevel: PollutionLevel
+  nearbyRestaurants(limit: Int): [Restaurant!]!
+  nearbyGroceries(limit: Int): [GroceryStore!]!
+  nearbyCoffeeShops(limit: Int): [CoffeeShop!]!
+  singleFamilyDetails: SingleFamily
+  condoDetails: Condo
+  townhomeDetails: Townhome
+  multiFamilyDetails: MultiFamily
+  lotDetails: Lot
+  mobileHomeDetails: MobileHome
+  apartmentDetails: Apartment
+}
+
+"""Detailed property attributes."""
+type PropertyDetails {
+  bedrooms: Int
+  bathrooms: Float
+  sqft: Int
+  lotSqft: Int
+  yearBuilt: Int
+  stories: Int
+  parkingType: ParkingType
+  parkingSpaces: Int
+  hasPool: Boolean
+  hasBasement: Boolean
+  hasFireplace: Boolean
+  heatingType: String
+  coolingType: String
+  roofType: String
+  exteriorMaterial: String
+  hoaMonthlyFee: Float
+  taxAnnual: Float
+  lastSaleDate: Date
+  lastSalePrice: Float
+}
+
+"""Single-family home specific attributes."""
+type SingleFamily {
+  garageSpaces: Int
+  hasPool: Boolean
+  hasBasement: Boolean
+  hasGuestHouse: Boolean
+  fenceType: String
+  deckOrPatio: Boolean
+}
+
+"""Condominium specific attributes."""
+type Condo {
+  floor: Int
+  totalFloors: Int
+  hoaMonthlyFee: Float!
+  hoaIncludes: [String!]!
+  buildingName: String
+  buildingAmenities: [ApartmentAmenity!]!
+  petPolicy: String
+}
+
+"""Townhome specific attributes."""
+type Townhome {
+  stories: Int!
+  isAttached: Boolean!
+  hoaMonthlyFee: Float
+  garageSpaces: Int
+  hasRooftopDeck: Boolean
+}
+
+"""Multi-family property specific attributes."""
+type MultiFamily {
+  unitCount: Int!
+  occupiedUnits: Int
+  grossRentAnnual: Float
+  capRate: Float
+  grossYield: Float
+  zoning: String
+}
+
+"""Vacant lot specific attributes."""
+type Lot {
+  acreage: Float!
+  zoning: String
+  hasUtilities: Boolean
+  utilities: [String!]!
+  topography: String
+  roadFrontage: Float
+}
+
+"""Mobile or manufactured home specific attributes."""
+type MobileHome {
+  parkName: String
+  padRentMonthly: Float
+  sizeCategory: String
+  isDoubleWide: Boolean
+  yearManufactured: Int
+}
+
+"""Apartment complex node."""
+type Apartment {
+  id: ID!
+  name: String!
+  address: Address!
+  totalUnits: Int!
+  builtYear: Int
+  managementCompany: String
+  website: URL
+  amenities: [ApartmentAmenity!]!
+  units: [UnitAvailability!]!
+  rentRange: RentRange!
+  incomeRestricted: IncomeRestricted
+  petPolicy: String
+  parkingAvailable: Boolean
+  laundryType: String
+  walkScore: WalkScore
+  transitScore: TransitScore
+}
+
+# ─── Listing Types ────────────────────────────────────────────────────────────
+
+"""For-sale listing node."""
+type ListingForSale {
+  id: ID!
+  property: Property!
+  listPrice: Price!
+  status: ListingStatus!
+  daysOnMarket: Int!
+  listedDate: Date!
+  pendingDate: Date
+  soldDate: Date
+  soldPrice: Price
+  agent: Agent
+  openHouses: [OpenHouse!]!
+  description: String
+  photos: [URL!]!
+  virtualTourURL: URL
+  mlsId: String
+}
+
+"""For-rent listing node."""
+type ListingForRent {
+  id: ID!
+  property: Property
+  apartment: Apartment
+  rentRange: RentRange!
+  status: RentalStatus!
+  availableDate: Date
+  leaseTerm: String
+  details: RentalDetails!
+  units: [UnitAvailability!]!
+  description: String
+  photos: [URL!]!
+  virtualTourURL: URL
+  agent: Agent
+}
+
+# ─── Rental Types ─────────────────────────────────────────────────────────────
+
+"""Rental record linking a unit to its listing."""
+type Rental {
+  id: ID!
+  listing: ListingForRent!
+  unit: UnitAvailability!
+  details: RentalDetails!
+}
+
+"""Rental lease and policy details."""
+type RentalDetails {
+  leaseTermMonths: Int
+  depositAmount: Float
+  petsAllowed: Boolean
+  petDeposit: Float
+  utilitiesIncluded: [String!]!
+  furnished: Boolean
+  laundryInUnit: Boolean
+  parkingIncluded: Boolean
+  smokingAllowed: Boolean
+}
+
+"""Individual unit availability within an apartment or multi-family."""
+type UnitAvailability {
+  unitNumber: String
+  bedrooms: Int!
+  bathrooms: Float!
+  sqft: Int
+  rent: Float!
+  availableDate: Date
+  status: RentalStatus!
+  photos: [URL!]!
+  amenities: [ApartmentAmenity!]!
+}
+
+"""Rent range for a unit type or geographic area."""
+type RentRange {
+  min: Float!
+  max: Float!
+  median: Float
+  currency: String!
+}
+
+"""Income-restriction details for affordable housing units."""
+type IncomeRestricted {
+  isRestricted: Boolean!
+  amiPercentage: Int
+  programName: String
+  eligibilityURL: URL
+}
+
+"""In-unit or building amenity for apartments."""
+type ApartmentAmenity {
+  name: String!
+  category: String!
+  inUnit: Boolean!
+}
+
+# ─── School Types ─────────────────────────────────────────────────────────────
+
+"""School node."""
+type School {
+  id: ID!
+  name: String!
+  type: SchoolType!
+  district: SchoolDistrict!
+  address: Address!
+  phone: String
+  website: URL
+  gradesServed: String
+  rating: SchoolRating!
+  details: SchoolDetails!
+}
+
+"""School aggregate rating."""
+type SchoolRating {
+  overall: Float
+  mathScore: Float
+  readingScore: Float
+  equityScore: Float
+  source: String
+  year: Int
+}
+
+"""Extended school data."""
+type SchoolDetails {
+  enrollment: Int
+  studentTeacherRatio: Float
+  testScorePercentile: Int
+  titleI: Boolean
+  magnet: Boolean
+  charter: Boolean
+  private: Boolean
+  religiousAffiliation: String
+}
+
+"""School district."""
+type SchoolDistrict {
+  id: ID!
+  name: String!
+  state: State!
+  schoolCount: Int
+  website: URL
+}
+
+# ─── Scores and Risk Types ────────────────────────────────────────────────────
+
+"""Walk Score for a property or location."""
+type WalkScore {
+  score: Int!
+  description: String!
+  details: String
+}
+
+"""Transit Score for a property or location."""
+type TransitScore {
+  score: Int!
+  description: String!
+  nearbyLines: [String!]!
+}
+
+"""Bike Score for a property or location."""
+type BikeScore {
+  score: Int!
+  description: String!
+  bikeInfrastructureNotes: String
+}
+
+"""Neighborhood-level crime grade."""
+type CrimeGrade {
+  overall: CrimeGradeLevel!
+  violent: CrimeGradeLevel
+  property: CrimeGradeLevel
+  assault: CrimeGradeLevel
+  robbery: CrimeGradeLevel
+  burglary: CrimeGradeLevel
+  theft: CrimeGradeLevel
+  vehicleTheft: CrimeGradeLevel
+  comparedToNational: String
+  comparedToCity: String
+}
+
+"""Environmental pollution levels near a property."""
+type PollutionLevel {
+  airQualityIndex: Int
+  superfundSitesNearby: Int
+  industrialFacilitiesNearby: Int
+  overallGrade: CrimeGradeLevel
+  details: String
+}
+
+"""FEMA flood risk for a property."""
+type FloodRisk {
+  floodZone: FloodZone!
+  riskLevel: FloodRiskLevel!
+  estimatedAnnualLoss: Float
+  inSpecialHazardArea: Boolean!
+  insuranceRequired: Boolean!
+  source: String
+}
+
+# ─── Nearby Amenity Types ────────────────────────────────────────────────────
+
+"""Neighborhood amenity category with count."""
+type NeighborhoodAmenity {
+  category: String!
+  count: Int!
+  radiusMiles: Float!
+}
+
+"""Nearby restaurant record."""
+type Restaurant {
+  name: String!
+  cuisine: String
+  rating: Float
+  distanceMiles: Float!
+  address: Address
+}
+
+"""Nearby grocery store record."""
+type GroceryStore {
+  name: String!
+  chain: String
+  distanceMiles: Float!
+  address: Address
+}
+
+"""Nearby coffee shop record."""
+type CoffeeShop {
+  name: String!
+  brand: String
+  distanceMiles: Float!
+  address: Address
+}
+
+# ─── Market Data Types ────────────────────────────────────────────────────────
+
+"""Home value index for a geographic area."""
+type HomeValues {
+  locationId: ID!
+  locationType: LocationType!
+  medianValue: Float!
+  currency: String!
+  yoyChange: Float
+  percentile25: Float
+  percentile75: Float
+  trend: [TrendData!]!
+  asOf: Date!
+}
+
+"""Rent index for a geographic area."""
+type RentIndex {
+  locationId: ID!
+  locationType: LocationType!
+  medianRent: Float!
+  currency: String!
+  yoyChange: Float
+  rentToIncomeRatio: Float
+  trend: [RentTrend!]!
+  asOf: Date!
+}
+
+"""Generic time-series data point."""
+type TrendData {
+  date: Date!
+  value: Float!
+}
+
+"""Historical listing or sale price event."""
+type HistoricalPrice {
+  date: Date!
+  price: Price!
+  event: String!
+  pricePerSqft: Float
+  source: String
+}
+
+"""Price with currency."""
+type Price {
+  amount: Float!
+  currency: String!
+  formattedAmount: String!
+}
+
+"""Monthly rent trend data point."""
+type RentTrend {
+  month: Date!
+  medianRent: Float!
+  yoyChange: Float
+}
+
+# ─── Agent Types ──────────────────────────────────────────────────────────────
+
+"""Real estate agent or broker node."""
+type Agent {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  fullName: String!
+  licenseNumber: String
+  licenseState: String
+  brokerage: String
+  phone: String
+  email: String
+  website: URL
+  photo: URL
+  details: AgentDetails!
+  reviews: AgentReviews!
+  activeListings: [ListingForSale!]!
+  activeRentals: [ListingForRent!]!
+}
+
+"""Extended agent biography and credentials."""
+type AgentDetails {
+  bio: String
+  yearsOfExperience: Int
+  languages: [String!]!
+  specialties: [String!]!
+  serviceAreas: [String!]!
+  transactionCount: Int
+  totalSalesVolume: Float
+}
+
+"""Aggregate agent review data."""
+type AgentReviews {
+  averageRating: Float!
+  totalCount: Int!
+  reviews: [AgentReview!]!
+}
+
+"""Individual agent review."""
+type AgentReview {
+  id: ID!
+  rating: Float!
+  comment: String
+  reviewerName: String
+  transactionType: String
+  date: Date!
+}
+
+# ─── Showing Types ────────────────────────────────────────────────────────────
+
+"""Open house event."""
+type OpenHouse {
+  id: ID!
+  listing: ListingForSale!
+  date: Date!
+  startTime: String!
+  endTime: String!
+  hostAgent: Agent
+  notes: String
+  virtualOption: Boolean!
+  virtualURL: URL
+}
+
+"""Buyer-initiated showing request."""
+type ShowingRequest {
+  id: ID!
+  listing: ListingForSale!
+  requestedDates: [DateTime!]!
+  buyerName: String!
+  buyerEmail: String!
+  buyerPhone: String
+  buyerAgent: Agent
+  status: String!
+  confirmedTime: DateTime
+}
+
+# ─── Mortgage Types ───────────────────────────────────────────────────────────
+
+"""Mortgage rate for a loan product."""
+type MortgageRate {
+  id: ID!
+  loanType: LoanType!
+  term: MortgageTerm!
+  interestRate: Float!
+  apr: Float!
+  points: Float!
+  lender: String!
+  asOf: DateTime!
+}
+
+"""Mortgage monthly payment estimate."""
+type MortgageCalculator {
+  purchasePrice: Float!
+  downPayment: Float!
+  loanAmount: Float!
+  interestRate: Float!
+  termYears: Int!
+  monthlyPayment: Float!
+  principalAndInterest: Float!
+  estimatedTax: Float!
+  estimatedInsurance: Float!
+  estimatedHOA: Float!
+  totalMonthlyPayment: Float!
+}
+
+# ─── Auth / Key Types ─────────────────────────────────────────────────────────
+
+"""
+API key record — historical artifact only.
+No new Trulia API keys are issued. Partner access is via Zillow Group programs.
+"""
+type APIKey {
+  id: ID!
+  key: String!
+  status: String!
+  createdAt: DateTime!
+  revokedAt: DateTime
+  owner: String
+}
+
+"""OAuth or session token for Zillow Group partner access."""
+type Token {
+  accessToken: String!
+  tokenType: String!
+  expiresIn: Int!
+  scope: String
+  issuedAt: DateTime!
+}
+
+# ─── Pagination Wrappers ──────────────────────────────────────────────────────
+
+type PageInfo {
+  hasNextPage: Boolean!
+  hasPreviousPage: Boolean!
+  startCursor: String
+  endCursor: String
+  totalCount: Int
+}
+
+type ListingForSaleConnection {
+  edges: [ListingForSaleEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ListingForSaleEdge {
+  node: ListingForSale!
+  cursor: String!
+}
+
+type ListingForRentConnection {
+  edges: [ListingForRentEdge!]!
+  pageInfo: PageInfo!
+}
+
+type ListingForRentEdge {
+  node: ListingForRent!
+  cursor: String!
+}
+
+# ─── Root Types ───────────────────────────────────────────────────────────────
+
+type Query {
+  """Fetch a single property by Trulia property ID."""
+  property(id: ID!): Property
+
+  """Search active for-sale listings with optional filtering."""
+  listingsForSale(
+    filter: ListingFilter
+    pagination: PaginationInput
+  ): ListingForSaleConnection!
+
+  """Search active rental listings with optional filtering."""
+  listingsForRent(
+    filter: RentalFilter
+    pagination: PaginationInput
+  ): ListingForRentConnection!
+
+  """Fetch neighborhood details and statistics by ID."""
+  neighborhood(id: ID!): Neighborhood
+
+  """Resolve neighborhood from latitude/longitude coordinates."""
+  neighborhoodByLocation(lat: Float!, lng: Float!): Neighborhood
+
+  """Fetch city-level data."""
+  city(name: String!, stateCode: String!): City
+
+  """Fetch ZIP code-level data."""
+  zipCode(code: String!): ZipCode
+
+  """Fetch a single school record."""
+  school(id: ID!): School
+
+  """List schools near a property within an optional radius (miles)."""
+  schoolsNearProperty(propertyId: ID!, radius: Float): [School!]!
+
+  """Fetch a real estate agent profile."""
+  agent(id: ID!): Agent
+
+  """List upcoming open houses with optional filtering."""
+  openHouses(filter: OpenHouseFilter): [OpenHouse!]!
+
+  """Current mortgage rate estimates for a loan type and term."""
+  mortgageRates(loanType: LoanType, term: MortgageTerm): [MortgageRate!]!
+
+  """Estimate monthly mortgage payment."""
+  mortgageCalculator(
+    purchasePrice: Float!
+    downPayment: Float!
+    interestRate: Float!
+    termYears: Int!
+    estimatedTax: Float
+    estimatedInsurance: Float
+    estimatedHOA: Float
+  ): MortgageCalculator!
+
+  """Home value index for a geographic area."""
+  homeValues(locationId: ID!, locationType: LocationType!): HomeValues
+
+  """Rent index for a geographic area."""
+  rentIndex(locationId: ID!, locationType: LocationType!): RentIndex
+
+  """Walk, transit, and bike scores for a property."""
+  walkScore(propertyId: ID!): WalkScore
+  transitScore(propertyId: ID!): TransitScore
+  bikeScore(propertyId: ID!): BikeScore
+
+  """Crime grade for a neighborhood."""
+  crimeGrade(neighborhoodId: ID!): CrimeGrade
+
+  """Flood risk for a property."""
+  floodRisk(propertyId: ID!): FloodRisk
+}
+
+type Mutation {
+  """Submit a showing request for a for-sale listing."""
+  requestShowing(
+    listingId: ID!
+    buyerName: String!
+    buyerEmail: String!
+    buyerPhone: String
+    preferredTimes: [DateTime!]!
+  ): ShowingRequest!
+
+  """
+  Exchange a Zillow Group partner credential for an access token.
+  (Historical stub — Trulia issued no new keys after deprecation.)
+  """
+  authenticate(apiKey: String!): Token!
+}
