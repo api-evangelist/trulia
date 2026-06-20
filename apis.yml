@@ -9,7 +9,7 @@ description: Trulia is a U.S. home and rental search portal owned by Zillow Grou
   data are now distributed through Zillow Group programs (Bridge Interactive, Zillow
   Tech Connect, HotPads). This profile is maintained as an honest historical record
   and pointer to the successor Zillow Group developer surfaces.
-image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
 url: https://www.trulia.com
 created: '2024-01-01'
 modified: '2026-05-23'
@@ -35,7 +35,7 @@ apis:
     and the developer.trulia.com portal was taken offline. No new keys are issued.
     Equivalent data is now available only to licensed real-estate professionals through
     Bridge Interactive.
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://www.trulia.com
   baseURL: https://api.trulia.com
   tags:
@@ -58,7 +58,7 @@ apis:
     data platform for MLSs and brokers, the Zillow Tech Connect partner program for
     vetted vendors, and the HotPads rentals surface. Access is gated, partner-only,
     and not self-serve.
-  image: https://kinlane-productions2.s3.amazonaws.com/apis-json/apis-json-logo.jpg
+  image: https://kinlane-images.s3.amazonaws.com/shared/apis-json/apis-json-logo.jpg
   humanURL: https://www.zillowgroup.com/developers
   baseURL: https://api.bridgedataoutput.com
   tags:
