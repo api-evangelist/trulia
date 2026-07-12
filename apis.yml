@@ -74,6 +74,8 @@ apis:
   - type: Documentation
     url: https://bridgedataoutput.com/docs/platform/
 common:
+- type: DomainSecurity
+  url: security/trulia-domain-security.yml
 - url: https://www.trulia.com
   name: Trulia Website
   type: Website
