@@ -33,6 +33,16 @@ tags:
 - Historical
 - Listings
 - Neighborhoods
+- Real-Estate
+- Rentals
+- Schools
+- Sunset
+- Zillow Group
+tags_raw:
+- Acquired
+- Historical
+- Listings
+- Neighborhoods
 - Real Estate
 - Rentals
 - Schools
@@ -51,6 +61,12 @@ apis:
   humanURL: https://www.trulia.com
   baseURL: https://api.trulia.com
   tags:
+  - Deprecated
+  - Listings
+  - Neighborhoods
+  - Real-Estate
+  - Sunset
+  tags_raw:
   - Deprecated
   - Listings
   - Neighborhoods
@@ -74,6 +90,13 @@ apis:
   humanURL: https://www.zillowgroup.com/developers
   baseURL: https://api.bridgedataoutput.com
   tags:
+  - Bridge
+  - MLS
+  - Partners
+  - Real-Estate
+  - RESO
+  - Zillow Group
+  tags_raw:
   - Bridge
   - MLS
   - Partners
