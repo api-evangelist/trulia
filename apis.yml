@@ -9,6 +9,17 @@ description: Trulia is a U.S. home and rental search portal owned by Zillow Grou
   data are now distributed through Zillow Group programs (Bridge Interactive, Zillow
   Tech Connect, HotPads). This profile is maintained as an honest historical record
   and pointer to the successor Zillow Group developer surfaces.
+deliveryModel:
+  model: saas
+  open_source: false
+  commercial: true
+  callable_host: false
+  label: Hosted service · you call their endpoint
+  confidence: medium
+  source:
+  - pricing
+  generated: '2026-08-28'
+  method: derived
 accessModel:
   pricing: free
   onboarding: unknown
