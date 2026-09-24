@@ -44,7 +44,7 @@ tags:
 - Historical
 - Listings
 - Neighborhoods
-- Real-Estate
+- Real Estate
 - Rentals
 - Schools
 - Sunset
@@ -59,6 +59,7 @@ tags_raw:
 - Schools
 - Sunset
 - Zillow Group
+- Real-Estate
 apis:
 - aid: trulia:trulia-api-historical
   name: Trulia API (Historical / Sunset)
@@ -75,7 +76,7 @@ apis:
   - Deprecated
   - Listings
   - Neighborhoods
-  - Real-Estate
+  - Real Estate
   - Sunset
   tags_raw:
   - Deprecated
@@ -83,13 +84,12 @@ apis:
   - Neighborhoods
   - Real Estate
   - Sunset
+  - Real-Estate
   properties:
   - type: Successor
     url: https://bridgedataoutput.com
   - type: ParentCompany
     url: https://www.zillowgroup.com
-  - url: graphql/trulia-graphql.md
-    type: GraphQL
 - aid: trulia:zillow-group-successor
   name: Zillow Group APIs (Successor)
   description: Programmatic access to data that historically lived behind the Trulia
@@ -104,7 +104,7 @@ apis:
   - Bridge
   - MLS
   - Partners
-  - Real-Estate
+  - Real Estate
   - RESO
   - Zillow Group
   tags_raw:
@@ -114,6 +114,7 @@ apis:
   - Real Estate
   - RESO
   - Zillow Group
+  - Real-Estate
   properties:
   - type: Portal
     url: https://www.zillowgroup.com/developers
