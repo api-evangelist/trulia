@@ -47,7 +47,6 @@ tags:
 - Real Estate
 - Rentals
 - Schools
-- Sunset
 - Zillow Group
 tags_raw:
 - Acquired
@@ -57,7 +56,6 @@ tags_raw:
 - Real Estate
 - Rentals
 - Schools
-- Sunset
 - Zillow Group
 - Real-Estate
 apis:
@@ -168,3 +166,5 @@ common:
 maintainers:
 - FN: Kin Lane
   email: kin@apievangelist.com
+x-tags-removed:
+- Sunset
