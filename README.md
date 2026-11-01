@@ -1,4 +1,4 @@
-# trulia
+# Trulia
 
 <!-- API-EVANGELIST-PROVENANCE:BEGIN -->
 > ### About this repository
@@ -64,4 +64,112 @@
 > Full detail: **[Where this data comes from](https://apievangelist.com/about/where-our-data-comes-from)**
 <!-- API-EVANGELIST-PROVENANCE:END -->
 
-Trulia (Zillow Group) — neighborhood + listings data
+Trulia is a U.S. home and rental search portal owned by Zillow Group since the 2015 acquisition. Trulia is best known for its neighborhood data layer, combining listings with crime, school, commute, transit, noise, flood, and resident sentiment information overlaid on the map. After the Zillow Group consolidation, Trulia's historical public APIs (the Trulia Hotpads / Property / Stats / Schools / Locations APIs) were deprecated and shut down. Trulia listings, agent, and rental data are now distributed through Zillow Group programs (Bridge Interactive, Zillow Tech Connect, HotPads). This profile is maintained as an honest historical record and pointer to the successor Zillow Group developer surfaces.
+
+**Areas:** Acquired · Historical · Listings · Neighborhoods · Real Estate · Rentals · Schools · Zillow Group
+
+## Trulia on APIs.io
+
+Everything profiled for Trulia is published on APIs.io rather than in this repository. Start at the provider page — **[apis.io/providers/trulia/](https://apis.io/providers/trulia/)** — or go straight to one of the APIs or properties below.
+
+### APIs (2)
+
+- [Trulia API (Historical / Sunset)](https://apis.io/apis/trulia/trulia-api-historical/) — The Trulia API was a suite of public XML/JSON endpoints that exposed listings, property details, location lookups, neighborhood statistics, and school data.…
+- [Zillow Group APIs (Successor)](https://apis.io/apis/trulia/zillow-group-successor/) — Programmatic access to data that historically lived behind the Trulia API is now delivered through Zillow Group's Bridge Interactive RESO-compliant data…
+
+### Published properties
+
+Each property below is a page on APIs.io carrying the machine-readable artifact and what it says.
+
+#### GraphQL (1)
+
+GraphQL schemas.
+
+- [Moved to /providers/trulia/](https://apis.io/graphqls/trulia/trulia-graphql/)
+
+#### Security (1)
+
+Authentication, trust centre, and vulnerability disclosure.
+
+- [Trulia Domain Security](https://apis.io/security/trulia/trulia-domain-security/)
+
+#### Plans and pricing (1)
+
+Published plans, tiers and prices.
+
+- [Trulia Plans Pricing](https://apis.io/plans/trulia/trulia-plans-pricing/)
+
+#### Rate limits (1)
+
+Published request limits.
+
+- [Trulia Rate Limits](https://apis.io/rate-limits/trulia/trulia-rate-limits/)
+
+#### FinOps (1)
+
+What the API costs to run, by operation.
+
+- [Trulia Finops](https://apis.io/finops/trulia/trulia-finops/)
+
+## Where to find this API
+
+Links to the company's own pages. This repository publishes no copy of their specifications — the canonical document is theirs and lives at the URLs below.
+
+- [Website](https://www.trulia.com)
+- [Support](https://www.trulia.com/help/)
+- [Blog](https://www.trulia.com/blog/)
+- [Terms of service](https://www.trulia.com/legal/terms/)
+- [Privacy policy](https://www.trulia.com/legal/privacy/)
+
+## API Evangelist rating
+
+**Kin Score 15.9** — emerging · rubric 0.24.0 · scored 2026-10-17
+
+| Facet | Score |
+|---|---|
+| Discoverability | 73.2 |
+| Contract quality | 0.0 |
+| Contract governance | 0.0 |
+| Operational transparency | 5.3 |
+| Developer ergonomics | 16.7 |
+| Access clarity | 26.3 |
+
+**Agent readiness 0.6** — human-only
+
+| Agent-readiness dimension | Result |
+|---|---|
+| Spec Presence | — |
+| Agentic Access | — |
+| Reversibility Documented | — |
+| MCP Server | — |
+| Auth Clarity | — |
+| Idempotency | — |
+| Error Semantics | — |
+| OpenAPI Examples | — |
+| Rate Limit Signal | derived (partial credit) |
+| Event Surface Described | — |
+| Agent Skills | — |
+| Well Known Catalog | — |
+| Consent Identity | — |
+| Agent Card | — |
+| Dry Run Mode | — |
+| Delegated Identity | — |
+| Protected Resource Metadata | — |
+| Dynamic Client Registration | — |
+| Agentic Commerce | — |
+
+**Regulatory alignment 13.7** — Education & Research
+
+The rubric is published at [github.com/api-evangelist/kin-score](https://github.com/api-evangelist/kin-score). The per-check breakdown behind these numbers — which checks were earned, partial or missed — along with score history and how this provider compares to its peers, is available at [apis.io/providers/trulia/](https://apis.io/providers/trulia/).
+
+## How this profile is made
+
+API Evangelist profiles a company's public API surface the way a developer would find it: the website, developer portal and documentation, the specifications it publishes, its public repositories, and its pricing, status and changelog pages. From that it derives the properties above — contracts split per API, workflows, schemas, collections, governance rules, plans and rate limits — and scores them against the published [Kin Score rubric](https://github.com/api-evangelist/kin-score).
+
+The artifacts are published on [APIs.io](https://apis.io), not in this repository. This repository is the public record for Trulia: the place to say something is wrong, missing or out of date, and to ask for a re-score or a removal.
+
+## Open an issue
+
+- **Something about this listing** — a wrong description, a missing API, a stale artifact or a question about the rating: [open an issue on this repository](https://github.com/api-evangelist/trulia/issues/new).
+- **A new API, or one that is not in the catalog yet** — [submit it on APIs.io](https://apis.io/add/).
+- **Anything else** — [the APIs.io inbox](https://github.com/api-search/inbox/issues/new) or [info@apievangelist.com](mailto:info@apievangelist.com).
